@@ -11,6 +11,6 @@ Route::get('/detail/profile/{hash}', [FolioController::class, 'show'])->name('pr
 
 Route::post('/sineas/register', [SineasRegistrationController::class, 'store'])->name('sineas.register');
 
-Route::get('/refresh-captcha', [FolioController::class, 'refreshCaptcha'])->name('refresh.captcha');
+// Route::get('/refresh-captcha', [FolioController::class, 'refreshCaptcha'])->name('refresh.captcha');
 
 require __DIR__.'/admin.php';
