@@ -5,9 +5,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->group(function() {
     // Dashboard - redirect ke halaman sineas management
-    // Route::get('/dashboard', function() {
-        // return redirect()->route('admin.sineas.index');
-    // });
+    Route::get('/dashboard', function() {
+        return redirect()->route('admin.dashboard.index');
+    })->name('admin.dashboard.index');
 
     // Routes untuk Sineas Management
     Route::prefix('sineas')->name('admin.sineas.')->group(function () {
