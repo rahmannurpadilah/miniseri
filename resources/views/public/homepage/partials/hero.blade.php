@@ -1,5 +1,5 @@
 <section id="home" class="hero-cinematic-v2 ">
-    <img src="{{ asset('assets/img/hero-miniseri.png') }}" class="hero-bg">
+    <img rel="preload" src="{{ asset('assets/img/hero-miniseri.png') }}" class="hero-bg" fetchpriority="hight">
 
     <div class="hero-gradient"></div>
 

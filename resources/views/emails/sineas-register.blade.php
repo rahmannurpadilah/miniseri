@@ -1,95 +1,124 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <title>Pendaftaran Sineas Baru</title>
+  <meta charset="UTF-8">
+  <title>Pendaftaran Sineas Baru</title>
 </head>
 <body style="
-    margin:0;
-    padding:0;
-    background:#f6f7fb;
-    font-family: Inter, Arial, sans-serif;
+  margin:0;
+  padding:0;
+  background:#f6f7f9;
+  font-family: Inter, Arial, sans-serif;
 ">
 
-<!-- WRAPPER -->
+<!-- OUTER -->
 <table width="100%" cellpadding="0" cellspacing="0">
 <tr>
-<td align="center" style="padding:40px 16px;">
+<td align="center" style="padding:48px 16px;">
 
-<!-- CARD -->
+<!-- GLASS CARD -->
 <table width="100%" cellpadding="0" cellspacing="0" style="
-    max-width:600px;
-    background:linear-gradient(135deg,#ffffff,#f9f9fb);
-    border-radius:22px;
-    box-shadow:0 30px 60px rgba(0,0,0,.08);
-    overflow:hidden;
+  max-width:640px;
+  background:rgba(255,255,255,.92);
+  border-radius:26px;
+  border:1px solid rgba(255,255,255,.6);
+  box-shadow:0 40px 90px rgba(237,34,88,.18);
+  overflow:hidden;
 ">
 
 <!-- HEADER -->
 <tr>
 <td style="
-    padding:28px 32px;
-    background:linear-gradient(135deg,#ed2258,#c81d4a);
-    color:#fff;
+  padding:36px 40px 28px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(237,34,88,.40),
+      rgba(237,34,88,.20)
+    );
 ">
-    <h2 style="
-        margin:0;
-        font-size:22px;
-        font-weight:700;
-        letter-spacing:.3px;
-    ">
-        Pendaftaran Sineas Baru
-    </h2>
-    <p style="
-        margin:6px 0 0;
-        font-size:14px;
-        opacity:.9;
-    ">
-        miniseri.id
-    </p>
+
+<p style="
+  margin:0 0 6px;
+  font-size:12px;
+  letter-spacing:2px;
+  font-weight:600;
+  color:#ed2258;
+">
+  JOIN SINEAS
+</p>
+
+<h1 style="
+  margin:0;
+  font-size:24px;
+  font-weight:800;
+  letter-spacing:-0.02em;
+  color:#111;
+">
+  Pendaftaran Sineas Baru
+</h1>
+
+<p style="
+  margin:14px 0 0;
+  font-size:15px;
+  line-height:1.8;
+  color:#444;
+  max-width:520px;
+">
+  Ada pendaftaran sineas baru melalui platform
+  <strong>Miniseri.id</strong>.
+</p>
+
 </td>
 </tr>
 
-<!-- BODY -->
+<!-- CONTENT -->
 <tr>
-<td style="padding:32px;">
+<td style="padding:32px 40px 40px;">
 
-<p style="
-    margin:0 0 18px;
-    font-size:15px;
-    color:#333;
-    line-height:1.7;
-">
-    Ada pendaftaran sineas baru melalui website <strong>miniseri.id</strong>
-</p>
-
-<!-- INFO BOX -->
+<!-- INFO GLASS -->
 <table width="100%" cellpadding="0" cellspacing="0" style="
-    background:#ffffff;
-    border-radius:16px;
-    border:1px solid #eee;
+  background:rgba(255,255,255,.75);
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,.5);
+  box-shadow:0 20px 50px rgba(0,0,0,.08);
 ">
 <tr>
-<td style="padding:18px 20px;">
+<td style="padding:26px 28px;">
 
-<p style="margin:0 0 10px;font-size:14px;">
-<strong>Nama:</strong><br>
-{{ $sineas->name }}
+<!-- ITEM -->
+<p style="margin:0 0 16px;font-size:14px;color:#333;">
+<span style="font-size:12px;color:#777;letter-spacing:1px;">NAMA</span><br>
+<strong style="font-size:15px;">{{ $sineas->name }}</strong>
 </p>
 
-<p style="margin:0 0 10px;font-size:14px;">
-<strong>Email:</strong><br>
-{{ $sineas->email }}
+<p style="margin:0 0 16px;font-size:14px;color:#333;">
+<span style="font-size:12px;color:#777;letter-spacing:1px;">EMAIL</span><br>
+<strong style="font-size:15px;">{{ $sineas->email }}</strong>
 </p>
 
-<p style="margin:0 0 10px;font-size:14px;">
-<strong>No HP:</strong><br>
-{{ $sineas->phone }}
+<p style="margin:0 0 16px;font-size:14px;color:#333;">
+<span style="font-size:12px;color:#777;letter-spacing:1px;">NO HP</span><br>
+<strong style="font-size:15px;">{{ $sineas->phone }}</strong>
 </p>
 
-<p style="margin:0;font-size:14px;">
-<strong>Bersedia edit format Miniseri:</strong><br>
-{{ $sineas->can_edit }}
+<p style="margin:0;font-size:14px;color:#333;">
+<span style="font-size:12px;color:#777;letter-spacing:1px;">
+EDIT FORMAT MINISERI
+</span><br>
+
+<span style="
+  display:inline-block;
+  margin-top:6px;
+  padding:6px 14px;
+  border-radius:999px;
+  background:rgba(237,34,88,.14);
+  color:#ed2258;
+  font-size:13px;
+  font-weight:600;
+">
+  {{ $sineas->can_edit }}
+</span>
 </p>
 
 </td>
@@ -102,14 +131,18 @@
 <!-- FOOTER -->
 <tr>
 <td style="
-    padding:22px 32px;
-    background:#f1f2f6;
-    font-size:12px;
-    color:#777;
-    text-align:center;
+  padding:26px 40px;
+  background:linear-gradient(
+    180deg,
+    #f6f7f9,
+    #ffffff
+  );
+  font-size:12px;
+  color:#777;
+  text-align:center;
 ">
-    Email ini dikirim otomatis dari sistem Miniseri.id<br>
-    © {{ date('Y') }} Miniseri
+  Email ini dikirim otomatis oleh sistem Miniseri.id<br>
+  © {{ date('Y') }} Miniseri
 </td>
 </tr>
 

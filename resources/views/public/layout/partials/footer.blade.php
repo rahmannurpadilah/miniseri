@@ -50,7 +50,7 @@
 
     <!-- COPYRIGHT -->
     <div class="footer-bottom">
-      <p>© 2026 Miniseri. All rights reserved.</p>
+      <p>© {{ date('Y') }} Miniseri. All rights reserved.</p>
     </div>
 
   </div>

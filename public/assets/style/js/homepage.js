@@ -42,7 +42,29 @@ window.addEventListener("scroll", () => {
   }
 });
 
-scrollBtn.addEventListener("click", () => {
+scrollBtn
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.addEventListener("click", () => {
   window.scrollTo({
     top: 0,
     behavior: "smooth"
@@ -71,6 +93,7 @@ window.addEventListener('scroll', () => {
 });
 
 toggle.addEventListener('click', () => {
+  toggle.classList.toggle('active');
   mobileNav.classList.toggle('show');
   navbarContent.classList.toggle('navbar-hide');
   if (checkBurger()){
@@ -81,6 +104,7 @@ toggle.addEventListener('click', () => {
 
 mobileNav.querySelectorAll('a').forEach(link => {
   link.addEventListener('click', () => {
+    toggle.classList.remove('active');
     mobileNav.classList.remove('show');
     navbarContent.classList.remove('navbar-hide');
   });

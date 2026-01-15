@@ -3,10 +3,10 @@
 ================================ */
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 400;
   font-size: 15px;
-  line-height: 1.7;
+  line-height: 1.75;
   color: #222;
   background: #f6f7f9;
 
@@ -16,7 +16,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Satoshi', sans-serif;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.02em;
   margin-bottom: 0.6em;
 }
@@ -169,7 +169,9 @@ p {
 }
 
 .brand span {
-  font-weight: 700;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 24px;
+  font-weight: 1000;
   color: #111;
   letter-spacing: .3px;
 }
@@ -197,6 +199,7 @@ p {
 .nav-item,
 .btn {
   font-family: 'Satoshi', sans-serif;
+  font-size: 16px;
   font-weight: 500;
   letter-spacing: 0.3px;
 }
@@ -242,13 +245,18 @@ p {
   height: 42px;
   border-radius: 12px;
   border: none;
-  background: rgba(255,255,255);
+  background: rgba(255,255,255,.75);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 5px;
+
+  cursor: pointer;
   pointer-events: auto;
+  transition: background .3s ease;
 }
 
 .burger span {
@@ -256,7 +264,26 @@ p {
   width: 20px;
   background: #222;
   margin: 0 auto;
+  border-radius: 2px;
+
+  transition:
+    transform .35s ease,
+    opacity .25s ease;
 }
+
+/* ===== ACTIVE STATE (JADI X) ===== */
+.burger.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.burger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.burger.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
 
 /* ===============================
    MOBILE NAV 
@@ -1156,13 +1183,13 @@ p {
   font-size: 18px;
 }
 
-.join-sec .pink-btn {
+/* .join-sec .pink-btn {
   background: linear-gradient(
     135deg,
     #ed2258,
     #c81d4a
   );
-  color: #fff;
+  color: green;
   font-weight: 600;
   letter-spacing: .5px;
 }
@@ -1170,7 +1197,7 @@ p {
 .join-sec .pink-btn:hover {
   transform: translateY(-3px);
   box-shadow: 0 18px 40px rgba(237,34,88,.45);
-}
+} */
 
 /* MOBILE */
 @media (max-width: 991px) {
@@ -1344,7 +1371,7 @@ p {
     rgba(255,255,255,.6)
   );
   backdrop-filter: blur(16px);
-  border-top: 1px solid rgba(0,0,0,.05);
+  border-top: 1px solid rgba(0,0,0,.5);
 }
 
 .footer-brand img {
@@ -1447,25 +1474,26 @@ p {
 ================================ */
 
 .film-detail-glass.section-md {
-  padding-top: 60px;
+  padding-top: 40px;
   padding-bottom: 90px;
 }
 
-
-/* MINI HERO */
-.film-hero-mini {
-  height: 320px;
-  border-radius: 28px;
-  overflow: hidden;
-  margin-bottom: 28px;
+/* .film-hero {
   position: relative;
-  margin-top: 28px;
+  height: 90vh;
+  min-height: 560px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
 }
 
-.film-hero-mini img {
+.film-hero-bg {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform: scale(1.1);
 }
 
 .film-hero-overlay {
@@ -1473,45 +1501,191 @@ p {
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(0,0,0,.35),
-    rgba(0,0,0,.65)
+    rgba(0,0,0,.2),
+    rgba(0,0,0,.55),
+    rgba(0,0,0,.85)
   );
 }
 
-.film-hero-text {
-  position: absolute;
-  bottom: 28px;
-  left: 32px;
-  right: 32px;
+.film-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 720px;
+  padding-bottom: 80px;
   color: #fff;
 }
 
-.film-hero-text h1 {
-  font-size: clamp(2rem, 3vw, 2.6rem);
+.film-hero-content h1 {
+  font-size: clamp(2.6rem, 5vw, 4.2rem);
   font-weight: 800;
+  line-height: 1.1;
+  margin: 14px 0;
 }
 
-.film-hero-text p {
-  max-width: 520px;
-  margin-top: 8px;
-  color: rgba(255,255,255,.85);
+.film-hero-content p {
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: rgba(255,255,255,.9);
+  max-width: 560px;
 }
 
-/* GLASS WRAP */
+.film-hero-content .film-badge {
+  background: rgba(237,34,88,.2);
+  color: #fff;
+}
+
+@media (max-width: 991px) {
+  .film-hero {
+    height: 75vh;
+    min-height: 460px;
+  }
+
+  .film-hero-content {
+    padding-bottom: 56px;
+  }
+} */
+
+/* ===============================
+   HERO (FILM DETAIL)
+================================ */
+
+.film-hero {
+  position: relative;
+  min-height: 90vh;
+  max-height: 900px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: #000;
+}
+
+/* background image */
+.film-hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* overlay */
+.film-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,.15) 0%,
+    rgba(0,0,0,.55) 55%,
+    rgba(0,0,0,.85) 100%
+  );
+}
+
+/* content */
+.film-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 720px;
+  padding: 0 20px 80px;
+  color: #fff;
+}
+
+/* title */
+.film-hero-content h1 {
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 14px;
+}
+
+/* desc */
+.film-hero-content p {
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: rgba(255,255,255,.9);
+  max-width: 560px;
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 991px) {
+
+  .film-hero {
+    min-height: 75vh;
+  }
+
+  .film-hero-content {
+    padding-bottom: 56px;
+    max-width: 100%;
+  }
+
+  .film-hero-content h1 {
+    font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+  }
+
+  .film-hero-content p {
+    font-size: 1rem;
+  }
+}
+
+/* ===============================
+   MOBILE (ANTI CROP)
+================================ */
+
+@media (max-width: 575px) {
+
+  .film-hero {
+    min-height: auto;
+    display: block;
+  }
+
+  .film-hero-bg {
+    position: relative;
+    width: 100%;
+    height: auto;
+    max-height: 65vh;
+    object-fit: contain; /* ⬅️ INI KUNCI: gambar tidak kepotong */
+    background: #000;
+  }
+
+  .film-hero-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(0,0,0,.25),
+      rgba(0,0,0,.45)
+    );
+  }
+
+  .film-hero-content {
+    position: relative;
+    padding: 24px 20px 28px;
+  }
+
+  .film-hero-content h1 {
+    font-size: 1.9rem;
+    line-height: 1.2;
+  }
+
+  .film-hero-content p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .film-hero-content .film-badge {
+    font-size: 12px;
+    padding: 5px 12px;
+  }
+}
+
+/* ===============================
+   GLASS WRAP
+================================ */
+
 .film-glass-wrap {
   padding: 26px;
   border-radius: 28px;
-}
-
-/* INFO */
-.film-info-compact h2 {
-  font-weight: 800;
-  margin: 12px 0;
-}
-
-.film-info-compact p {
-  color: #555;
-  line-height: 1.8;
 }
 
 /* BADGE */
@@ -1525,7 +1699,7 @@ p {
   border-radius: 999px;
 }
 
-/* JUDUL & TEKS */
+/* TITLE & DESC */
 .film-title {
   font-weight: 800;
   margin: 10px 0 12px;
@@ -1543,7 +1717,7 @@ p {
   margin: 28px 0;
 }
 
-/* DESKRIPSI PANJANG */
+/* LONG DESC */
 .film-desc-long h5 {
   font-weight: 700;
   margin-bottom: 10px;
@@ -1552,21 +1726,6 @@ p {
 .film-desc-long p {
   color: #555;
   line-height: 1.8;
-}
-
-/* RESPONSIVE */
-@media (max-width: 991px) {
-  .film-hero-mini {
-    height: 260px;
-  }
-
-  .film-glass-wrap {
-    padding: 22px;
-  }
-
-  .film-divider {
-    margin: 22px 0;
-  }
 }
 
 /* ===============================
@@ -1599,10 +1758,6 @@ p {
   transition: all .3s ease;
 }
 
-.back-home-btn i {
-  font-size: 13px;
-}
-
 .back-home-btn:hover {
   transform: translateY(-2px);
   background: rgba(237,34,88,.85);
@@ -1619,8 +1774,8 @@ p {
 }
 
 /* ===============================
-   TOAST GLASS
-   ===============================*/
+   TOAST
+================================ */
 
 .toast-glass {
   position: fixed;
@@ -1628,7 +1783,6 @@ p {
   right: 24px;
   max-width: 420px;
   display: flex;
-  align-items: flex-start;
   gap: 12px;
   padding: 16px 20px;
   border-radius: 18px;
@@ -1638,40 +1792,18 @@ p {
   box-shadow: 0 25px 60px rgba(0,0,0,.18);
 
   font-size: 14px;
-  line-height: 1.6;
   z-index: 9999;
-
   animation: toastUp .45s ease;
 }
 
-/* ICON */
-.toast-glass i {
-  font-size: 20px;
-  margin-top: 2px;
-}
-
-/* TEXT */
-.toast-text ul {
-  margin: 6px 0 0;
-  padding-left: 18px;
-}
-
-.toast-text li {
-  font-size: 13px;
-}
-
-/* VARIANT */
 .toast-glass.success {
   border-left: 4px solid #28c840;
-  color: #1f7a3f;
 }
 
 .toast-glass.error {
   border-left: 4px solid #e63946;
-  color: #8a0f17;
 }
 
-/* ANIMATION */
 @keyframes toastUp {
   from {
     opacity: 0;
@@ -1682,4 +1814,3 @@ p {
     transform: translateY(0);
   }
 }
-

@@ -38,7 +38,7 @@
                 </ul>
 
                 <button
-                    class="pink-btn w-100 mt-3"
+                    class="btn pink-btn w-100 rounded-pill mt-3"
                     data-bs-toggle="modal"
                     data-bs-target="#modalRegister"
                 >

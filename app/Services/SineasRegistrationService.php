@@ -22,6 +22,7 @@ class SineasRegistrationService
         ]);
 
         Mail::to(config('mail.admin_email'))->send(new SineasRegisterMail($sineas));
+
         return $sineas;
     }
 }

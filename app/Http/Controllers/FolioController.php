@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Services\FolioService;
-use Illuminate\Http\Request;
 
 class FolioController extends Controller
 {
@@ -16,5 +15,4 @@ class FolioController extends Controller
 
         return view('public.homepage.folio-detail.index', $data);
     }
-
 }

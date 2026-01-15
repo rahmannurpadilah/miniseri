@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
 
-            $table->string('banner'); 
-            $table->string('trailer');  
+            $table->string('banner');
+            $table->string('trailer');
 
             $table->string('desc_home', 255);
             $table->text('desc_side');

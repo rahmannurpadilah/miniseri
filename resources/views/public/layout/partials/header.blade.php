@@ -20,7 +20,7 @@
         </nav>
 
         <!-- MOBILE TOGGLE -->
-        <button class="burger d-lg-none" id="navToggle">
+        <button class="burger d-lg-none" id="navToggle" aria-label="Togglenavigation">
             <span></span><span></span><span></span>
         </button>
 

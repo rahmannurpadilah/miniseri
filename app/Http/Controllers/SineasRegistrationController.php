@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SineasRegistration;
 use App\Services\SineasRegistrationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -29,19 +28,21 @@ class SineasRegistrationController extends Controller
             'remoteip' => $request->ip(),
         ]);
 
-        if(!($response->json()['success'] ?? false)){
+        if (! ($response->json()['success'] ?? false)) {
             return redirect()->back()->withErrors(['g-recaptcha-response' => 'Captcha tidak valid. Tolong coba lagi.'])->withInput();
         }
 
-        try{
+        try {
             $service->register($request->all());
+
             return redirect()->back()->with('success', 'Pendaftaran berhasil dikirim.');
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat mengirim pendaftaran.');
         }
     }
 
-    public function refreshCaptcha() {
-        return response()->json(['captcha' => captcha_img()]);
-    }
+    // public function refreshCaptcha()
+    // {
+    //     return response()->json(['captcha' => captcha_img()]);
+    // }
 }

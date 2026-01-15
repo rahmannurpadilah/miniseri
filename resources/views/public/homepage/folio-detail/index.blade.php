@@ -21,18 +21,28 @@
   <span>Home</span>
 </a>
 
+<!-- HERO FILM -->
+<section class="film-hero">
+  <img
+    src="{{ asset('assets/img/film/foto/' . $folio->banner) }}"
+    alt="Banner Film"
+    class="film-hero-bg"
+  >
+
+  <div class="film-hero-overlay"></div>
+
+  <div class="container">
+    <div class="film-hero-content">
+      <span class="film-badge">Drama • Romantis</span>
+      <h1>{{ $folio->title }}</h1>
+      <p>{{ $folio->desc_home }}</p>
+    </div>
+  </div>
+</section>
 <section class="film-detail-glass section-md">
   <div class="container">
 
-    <!-- HERO MINI -->
-    <div class="film-hero-mini">
-      <img src="{{ asset('assets/img/film/foto/' . $folio->banner) }}" alt="Banner Film">
-      <div class="film-hero-overlay"></div>
-      <div class="film-hero-text">
-        <h1>{{ $folio->title }}</h1>
-        <p>{{ $folio->desc_home }}</p>
-      </div>
-    </div>
+
 
     <!-- GLASS WRAP -->
     <div class="film-glass-wrap glass-card">
