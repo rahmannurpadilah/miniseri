@@ -467,10 +467,14 @@ id="layout-navbar">
         </li>
         <li>
             <div class="d-grid px-2 pt-2 pb-1">
-            <a class="btn btn-sm btn-danger d-flex" href="auth-login-cover.html" target="_blank">
-                <small class="align-middle">Logout</small>
-                <i class="ti ti-logout ms-2 ti-14px"></i>
-            </a>
+            <!-- Form untuk logout (POST request) -->
+            <form method="POST" action="{{ route('admin.logout') }}" style="display: inline;">
+                @csrf
+                <button type="submit" class="btn btn-sm btn-danger d-flex w-100" style="border: none; cursor: pointer;">
+                    <small class="align-middle">Logout</small>
+                    <i class="ti ti-logout ms-2 ti-14px"></i>
+                </button>
+            </form>
             </div>
         </li>
         </ul>

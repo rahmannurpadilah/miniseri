@@ -27,7 +27,7 @@
     <!-- Page -->
     <li class="menu-item {{ activeMenu('admin.dashboard.*') }}">
     <a href="{{ route('admin.dashboard.index') }}" class="menu-link">
-        <i class="menu-icon tf-icons ti ti-smart-home"></i>
+        <i class="menu-icon tf-icons ti ti-dashboard me-2"></i>
         <div data-i18n="Admin Dashboard">Dashboard</div>
     </a>
     </li>
