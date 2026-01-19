@@ -64,12 +64,12 @@
     <!-- Data Tables -->
     <div class="row">
 
-        <!-- Portofolio Terpopuler -->
+        <!-- Portofolio Unggulan -->
         <div class="col-lg-6 mb-4">
             <div class="card">
                 <div class="table-responsive">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Portofolio Terpopuler</h5>
+                        <h5 class="mb-0">Portofolio Unggulan</h5>
                         <a href="#" class="text-muted">
                             <i class="ti ti-dots-vertical"></i>
                         </a>
@@ -91,7 +91,7 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <span class="badge bg-label-primary">Populer</span>
+                                        <span class="badge bg-label-primary">Unggulan</span>
                                     </td>
                                     <td>
                                         <span class="text-muted small">

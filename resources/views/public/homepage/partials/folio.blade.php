@@ -20,7 +20,7 @@
         <div class="col-md-6 col-lg-4">
           <div class="film-card glass-card reveal">
             <div class="film-thumb">
-              <img src="{{ asset('assets/img/film/foto/' . $folio->banner) }}" alt="Film-{{ $index + 1 }}">
+              <img src="{{ asset('storage/' . $folio->banner) }}" alt="Film-{{ $index + 1 }}">
             </div>
             <div class="film-body">
               <h4>{{ $folio->title }}</h4>
