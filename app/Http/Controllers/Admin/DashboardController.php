@@ -29,8 +29,8 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
-        // Ambil folios terbaru (limit 3)
-        $recentFolios = Folio::query()
+        // Ambil folios unggulan (limit 3)
+        $recentFolios = Folio::where('is_favorite', true)
             ->latest('created_at')
             ->limit(3)
             ->get();

@@ -1,0 +1,164 @@
+@extends('admin.layout.index')
+@section('title', 'Miniseri - Tambah Folio')
+@section('content')
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <!-- Header -->
+    <h4 class="mb-4">Tambah Folio Baru</h4>
+
+    <!-- Alert Messages -->
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <!-- Form -->
+    <div class="card">
+        <div class="card-body">
+            <form action="{{ route('admin.folios.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="title" class="form-label">Judul Folio <span class="text-danger">*</span></label>
+                        <input type="text" 
+                               class="form-control @error('title') is-invalid @enderror" 
+                               id="title" 
+                               name="title" 
+                               value="{{ old('title') }}"
+                               placeholder="Masukkan judul folio"
+                               required>
+                        @error('title')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="is_favorite" class="form-label">Jadikan Unggulan</label>
+                        <div class="form-check form-switch mt-2">
+                            <input class="form-check-input" 
+                                   type="checkbox" 
+                                   id="is_favorite" 
+                                   name="is_favorite"
+                                   value="1"
+                                   {{ old('is_favorite') ? 'checked' : '' }}>
+                            <label class="form-check-label" for="is_favorite">
+                                Tandai sebagai film unggulan (maksimal 3)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Banner Upload -->
+                <div class="mb-3">
+                    <label for="banner" class="form-label">Banner <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <input type="file" 
+                               class="form-control @error('banner') is-invalid @enderror" 
+                               id="banner" 
+                               name="banner" 
+                               accept="image/*"
+                               required>
+                        <span class="input-group-text">JPG, PNG, GIF (Max: 2MB)</span>
+                    </div>
+                    @error('banner')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                    <div id="bannerPreview" class="mt-2"></div>
+                </div>
+
+                <!-- Trailer Upload -->
+                <div class="mb-3">
+                    <label for="trailer" class="form-label">Trailer Video <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <input type="file" 
+                               class="form-control @error('trailer') is-invalid @enderror" 
+                               id="trailer" 
+                               name="trailer" 
+                               accept="video/*"
+                               required>
+                        <span class="input-group-text">MP4, WebM, AVI (Max: 100MB)</span>
+                    </div>
+                    @error('trailer')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Descriptions -->
+                <div class="mb-3">
+                    <label for="desc_home" class="form-label">Deskripsi Singkat (Home) <span class="text-danger">*</span></label>
+                    <textarea class="form-control @error('desc_home') is-invalid @enderror" 
+                              id="desc_home" 
+                              name="desc_home" 
+                              rows="2"
+                              placeholder="Deskripsi singkat untuk halaman home"
+                              maxlength="255"
+                              required>{{ old('desc_home') }}</textarea>
+                    <small class="text-muted">Maksimal 255 karakter</small>
+                    @error('desc_home')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="desc_side" class="form-label">Deskripsi Sidebar <span class="text-danger">*</span></label>
+                    <textarea class="form-control @error('desc_side') is-invalid @enderror" 
+                              id="desc_side" 
+                              name="desc_side" 
+                              rows="3"
+                              placeholder="Deskripsi untuk sidebar"
+                              required>{{ old('desc_side') }}</textarea>
+                    @error('desc_side')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="desc_full" class="form-label">Deskripsi Lengkap <span class="text-danger">*</span></label>
+                    <textarea class="form-control @error('desc_full') is-invalid @enderror" 
+                              id="desc_full" 
+                              name="desc_full" 
+                              rows="5"
+                              placeholder="Deskripsi lengkap folio"
+                              required>{{ old('desc_full') }}</textarea>
+                    @error('desc_full')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Actions -->
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Simpan
+                    </button>
+                    <a href="{{ route('admin.folios.index') }}" class="btn btn-secondary">
+                        <i class="fas fa-times me-2"></i>Batal
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Banner preview
+    document.getElementById('banner').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('bannerPreview').innerHTML = 
+                    '<img src="' + e.target.result + '" style="max-width: 100%; height: 200px; object-fit: cover;" alt="Preview">';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
+@endsection

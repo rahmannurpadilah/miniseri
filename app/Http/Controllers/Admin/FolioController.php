@@ -4,41 +4,37 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Folio;
-use App\Services\Admin\FolioManagementService;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
-// Controller untuk admin folio management
 class FolioController extends Controller
 {
-    public function __construct(protected FolioManagementService $folioService) {}
-
     /**
-     * Tampilkan list semua folio (3 populer + yang lain dengan pagination)
+     * Tampilkan daftar semua folio dengan favorit di atas
      */
     public function index(): View
     {
-        // Ambil folio populer (max 3)
-        $popularFolios = Folio::where('is_popular', true)
-            ->orderBy('updated_at', 'desc')
+        // Ambil 3 folio favorit
+        $favoriteFolios = Folio::where('is_favorite', true)
+            ->orderBy('created_at', 'desc')
+            ->limit(3)
             ->get();
 
-        // Ambil folio lainnya dengan pagination
-        $allFolios = Folio::paginate(10);
+        // Ambil semua folio yang bukan favorit
+        $allFolios = Folio::where('is_favorite', false)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        return view('admin.folio_management.index', [
-            'popularFolios' => $popularFolios,
-            'allFolios' => $allFolios,
-        ]);
+        return view('admin.folios_management.index', compact('favoriteFolios', 'allFolios'));
     }
 
     /**
-     * Tampilkan form create folio
+     * Tampilkan form untuk membuat folio baru
      */
     public function create(): View
     {
-        return view('admin.folio_management.create');
+        return view('admin.folios_management.create');
     }
 
     /**
@@ -46,75 +42,42 @@ class FolioController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        // Validasi input
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'desc_home' => 'required|string|max:160',
-            'desc_long' => 'nullable|string',
-            'banner' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'trailer' => 'required|file|mimes:mp4,avi,mov,webm|max:102400',
-            'budget' => 'nullable|numeric|min:0',
-            'quality' => 'nullable|string|max:50',
-            'genre' => 'nullable|string|max:100',
-            'duration' => 'nullable|numeric|min:0',
-        ], [
-            'title.required' => 'Judul harus diisi',
-            'desc_home.required' => 'Deskripsi singkat harus diisi',
-            'banner.required' => 'Banner harus diupload',
-            'banner.image' => 'Banner harus berupa gambar',
-            'banner.max' => 'Ukuran banner maksimal 5MB',
-            'trailer.required' => 'Trailer harus diupload',
-            'trailer.file' => 'Trailer harus berupa file video',
-            'trailer.max' => 'Ukuran trailer maksimal 100MB',
+            'is_favorite' => 'boolean',
+            'banner' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'trailer' => 'required|file|mimes:mp4,webm,avi|max:102400',
+            'desc_home' => 'required|string|max:255',
+            'desc_side' => 'required|string',
+            'desc_full' => 'required|string',
         ]);
 
-        // Buat folio via service
-        $this->folioService->createFolio($validated);
+        // Handle banner upload
+        if ($request->hasFile('banner')) {
+            $bannerPath = $request->file('banner')->store('folios/banners', 'public');
+            $validated['banner'] = $bannerPath;
+        }
 
-        return redirect()->route('admin.folio.index')
-            ->with('success', 'Folio berhasil ditambahkan');
-    }
+        // Handle trailer upload
+        if ($request->hasFile('trailer')) {
+            $trailerPath = $request->file('trailer')->store('folios/trailers', 'public');
+            $validated['trailer'] = $trailerPath;
+        }
 
-    /**
-     * Tampilkan form edit folio
-     */
-    public function edit(Folio $folio): View
-    {
-        return view('admin.folio_management.edit', [
-            'folio' => $folio,
-        ]);
-    }
+        // Set default is_favorite jika tidak ada
+        $validated['is_favorite'] = $request->has('is_favorite') ? true : false;
 
-    /**
-     * Update folio ke database
-     */
-    public function update(Request $request, Folio $folio): RedirectResponse
-    {
-        // Validasi input
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'desc_home' => 'required|string|max:160',
-            'desc_long' => 'nullable|string',
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'trailer' => 'nullable|file|mimes:mp4,avi,mov,webm|max:102400',
-            'budget' => 'nullable|numeric|min:0',
-            'quality' => 'nullable|string|max:50',
-            'genre' => 'nullable|string|max:100',
-            'duration' => 'nullable|numeric|min:0',
-        ], [
-            'title.required' => 'Judul harus diisi',
-            'desc_home.required' => 'Deskripsi singkat harus diisi',
-            'banner.image' => 'Banner harus berupa gambar',
-            'banner.max' => 'Ukuran banner maksimal 5MB',
-            'trailer.file' => 'Trailer harus berupa file video',
-            'trailer.max' => 'Ukuran trailer maksimal 100MB',
-        ]);
+        // Jika is_favorite dipilih, pastikan hanya maksimal 3 favorit
+        if ($validated['is_favorite']) {
+            $favoritesCount = Folio::where('is_favorite', true)->count();
+            if ($favoritesCount >= 3) {
+                return redirect()->back()->with('error', 'Hanya boleh maksimal 3 folio favorit');
+            }
+        }
 
-        // Update folio via service
-        $this->folioService->updateFolio($folio, $validated);
+        Folio::create($validated);
 
-        return redirect()->route('admin.folio.index')
-            ->with('success', 'Folio berhasil diupdate');
+        return redirect()->route('admin.folios.index')->with('success', 'Folio berhasil ditambahkan');
     }
 
     /**
@@ -122,34 +85,106 @@ class FolioController extends Controller
      */
     public function show(Folio $folio): View
     {
-        return view('admin.folio_management.show', [
-            'folio' => $folio,
-        ]);
+        return view('admin.folios_management.show', compact('folio'));
     }
 
     /**
-     * Hapus folio dari database
+     * Tampilkan form untuk mengedit folio
+     */
+    public function edit(Folio $folio): View
+    {
+        return view('admin.folios_management.edit', compact('folio'));
+    }
+
+    /**
+     * Update folio di database
+     */
+    public function update(Request $request, Folio $folio): RedirectResponse
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'is_favorite' => 'boolean',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'trailer' => 'nullable|file|mimes:mp4,webm,avi|max:102400',
+            'desc_home' => 'required|string|max:255',
+            'desc_side' => 'required|string',
+            'desc_full' => 'required|string',
+        ]);
+
+        // Handle banner upload
+        if ($request->hasFile('banner')) {
+            // Hapus banner lama jika ada
+            if ($folio->banner) {
+                \Storage::disk('public')->delete($folio->banner);
+            }
+            $bannerPath = $request->file('banner')->store('folios/banners', 'public');
+            $validated['banner'] = $bannerPath;
+        }
+
+        // Handle trailer upload
+        if ($request->hasFile('trailer')) {
+            // Hapus trailer lama jika ada
+            if ($folio->trailer) {
+                \Storage::disk('public')->delete($folio->trailer);
+            }
+            $trailerPath = $request->file('trailer')->store('folios/trailers', 'public');
+            $validated['trailer'] = $trailerPath;
+        }
+
+        // Update is_favorite
+        $isFavoriteBefore = $folio->is_favorite;
+        $validated['is_favorite'] = $request->has('is_favorite') ? true : false;
+
+        // Cek limit favorit
+        if ($validated['is_favorite'] && !$isFavoriteBefore) {
+            $favoritesCount = Folio::where('is_favorite', true)->count();
+            if ($favoritesCount >= 3) {
+                return redirect()->back()->with('error', 'Hanya boleh maksimal 3 folio favorit');
+            }
+        }
+
+        $folio->update($validated);
+
+        return redirect()->route('admin.folios.index')->with('success', 'Folio berhasil diperbarui');
+    }
+
+    /**
+     * Hapus folio
      */
     public function destroy(Folio $folio): RedirectResponse
     {
-        $this->folioService->deleteFolio($folio);
+        // Hapus banner jika ada
+        if ($folio->banner) {
+            \Storage::disk('public')->delete($folio->banner);
+        }
 
-        return redirect()->route('admin.folio.index')
-            ->with('success', 'Folio berhasil dihapus');
+        // Hapus trailer jika ada
+        if ($folio->trailer) {
+            \Storage::disk('public')->delete($folio->trailer);
+        }
+
+        $folio->delete();
+
+        return redirect()->route('admin.folios.index')->with('success', 'Folio berhasil dihapus');
     }
 
     /**
-     * Toggle popular status folio (max 3 populer)
+     * Toggle status unggulan folio
      */
-    public function togglePopular(Folio $folio): RedirectResponse
+    public function toggleFavorite(Folio $folio): RedirectResponse
     {
-        $this->folioService->togglePopular($folio);
-
-        $status = $folio->fresh()->is_popular ? 'menjadi populer' : 'tidak populer lagi';
-
-        return redirect()->route('admin.folio.index')
-            ->with('success', "Folio '{$folio->title}' {$status}");
+        // Jika akan dijadikan unggulan, cek apakah sudah maksimal 3
+        if (!$folio->is_favorite) {
+            $favoritesCount = Folio::where('is_favorite', true)->count();
+            if ($favoritesCount >= 3) {
+                return redirect()->back()->with('error', 'Hanya boleh maksimal 3 folio unggulan. Hapus salah satu terlebih dahulu.');
+            }
+            $folio->update(['is_favorite' => true]);
+            return redirect()->back()->with('success', 'Folio berhasil dijadikan unggulan');
+        } else {
+            // Hapus dari unggulan
+            $folio->update(['is_favorite' => false]);
+            return redirect()->back()->with('success', 'Folio berhasil dihapus dari unggulan');
+        }
     }
 }
-
-

@@ -24,7 +24,7 @@
 <!-- HERO FILM -->
 <section class="film-hero">
   <img
-    src="{{ asset('assets/img/film/foto/' . $folio->banner) }}"
+    src="{{ asset('storage/' . $folio->banner) }}"
     alt="Banner Film"
     class="film-hero-bg"
   >
@@ -56,7 +56,7 @@
               allowfullscreen>
             </iframe> --}}
             <video width="100%" controls>
-                <source src="{{ asset('assets/img/film/video/' . $folio->trailer) }}" type="video/mp4">
+                <source src="{{ asset('storage/' . $folio->trailer) }}" type="video/mp4">
             </video>
           </div>
         </div>

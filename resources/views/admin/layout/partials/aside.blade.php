@@ -37,6 +37,12 @@
         <div data-i18n="Sineas Management">Sineas Management</div>
     </a>
     </li>
+    <li class="menu-item {{ activeMenu('admin.folios.*') }}">
+    <a href="{{ route('admin.folios.index') }}" class="menu-link">
+        <i class="menu-icon tf-icons ti ti-briefcase"></i>
+        <div data-i18n="Folio Management">Folios Management</div>
+    </a>
+    </li>
 </ul>
 </aside>
 <!-- / Menu -->
