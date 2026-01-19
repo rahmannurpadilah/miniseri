@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthenticationController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SineasController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,9 +17,7 @@ Route::prefix('admin')->group(function() {
 // Route yang memerlukan autentikasi
 Route::prefix('admin')->middleware('authentication')->group(function() {
     // Dashboard - redirect ke halaman sineas management
-    Route::get('/dashboard', function() {
-        return view('admin.dashboard.index');
-    })->name('admin.dashboard.index');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard.index');
 
     // Proses logout
     Route::post('/logout', [AuthenticationController::class, 'logout'])->name('admin.logout');
