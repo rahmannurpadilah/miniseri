@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Folio;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class FolioController extends Controller
@@ -83,24 +86,47 @@ class FolioController extends Controller
     /**
      * Tampilkan detail folio
      */
-    public function show(Folio $folio): View
+    public function show(String $hash): View | RedirectResponse
     {
+        try {
+            $id = Crypt::decrypt($hash);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('error', 'Folio tidak ditemukan');
+        }
+
+        $folio = Folio::findOrFail($id);
+
         return view('admin.folios_management.show', compact('folio'));
     }
 
     /**
      * Tampilkan form untuk mengedit folio
      */
-    public function edit(Folio $folio): View
+    public function edit(String $hash): View | RedirectResponse
     {
+
+        try {
+            $id = Crypt::decrypt($hash);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('error', 'Folio tidak ditemukan');
+        }
+
+        $folio = Folio::findOrFail($id);
         return view('admin.folios_management.edit', compact('folio'));
     }
 
     /**
      * Update folio di database
      */
-    public function update(Request $request, Folio $folio): RedirectResponse
+    public function update(Request $request, String $hash): RedirectResponse
     {
+
+        try {
+            $id = Crypt::decrypt($hash);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('error', 'Folio tidak ditemukan');
+        }
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'is_favorite' => 'boolean',
@@ -111,11 +137,13 @@ class FolioController extends Controller
             'desc_full' => 'required|string',
         ]);
 
+        $folio = Folio::findOrFail($id);
+
         // Handle banner upload
         if ($request->hasFile('banner')) {
             // Hapus banner lama jika ada
             if ($folio->banner) {
-                \Storage::disk('public')->delete($folio->banner);
+                Storage::disk('public')->delete($folio->banner);
             }
             $bannerPath = $request->file('banner')->store('folios/banners', 'public');
             $validated['banner'] = $bannerPath;
@@ -125,7 +153,7 @@ class FolioController extends Controller
         if ($request->hasFile('trailer')) {
             // Hapus trailer lama jika ada
             if ($folio->trailer) {
-                \Storage::disk('public')->delete($folio->trailer);
+                Storage::disk('public')->delete($folio->trailer);
             }
             $trailerPath = $request->file('trailer')->store('folios/trailers', 'public');
             $validated['trailer'] = $trailerPath;
@@ -151,16 +179,25 @@ class FolioController extends Controller
     /**
      * Hapus folio
      */
-    public function destroy(Folio $folio): RedirectResponse
+    public function destroy(String $hash): RedirectResponse
     {
+
+        try {
+            $id = Crypt::decrypt($hash);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('error', 'Folio tidak ditemukan');
+        }
+
+        $folio = Folio::findOrFail($id);
+
         // Hapus banner jika ada
         if ($folio->banner) {
-            \Storage::disk('public')->delete($folio->banner);
+            Storage::disk('public')->delete($folio->banner);
         }
 
         // Hapus trailer jika ada
         if ($folio->trailer) {
-            \Storage::disk('public')->delete($folio->trailer);
+            Storage::disk('public')->delete($folio->trailer);
         }
 
         $folio->delete();
@@ -171,8 +208,17 @@ class FolioController extends Controller
     /**
      * Toggle status unggulan folio
      */
-    public function toggleFavorite(Folio $folio): RedirectResponse
+    public function toggleFavorite(String $hash): RedirectResponse
     {
+
+        try {
+            $id = Crypt::decrypt($hash);
+        } catch (DecryptException $e) {
+            return redirect()->back()->with('error', 'Folio tidak ditemukan');
+        }
+
+        $folio = Folio::findOrFail($id);
+
         // Jika akan dijadikan unggulan, cek apakah sudah maksimal 3
         if (!$folio->is_favorite) {
             $favoritesCount = Folio::where('is_favorite', true)->count();

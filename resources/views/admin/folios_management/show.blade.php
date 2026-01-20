@@ -170,12 +170,12 @@
             <!-- ACTIONS -->
             <div class="card">
                 <div class="card-body d-grid gap-2">
-                    <a href="{{ route('admin.folios.edit', $folio) }}" class="btn btn-warning">
+                    <a href="{{ route('admin.folios.edit', Crypt::encrypt($folio->id)) }}" class="btn btn-warning">
                         <i class="fas fa-edit me-2"></i>Edit Folio
                     </a>
                     <button type="button"
                             class="btn btn-danger"
-                            onclick="confirmDelete('{{ route('admin.folios.destroy', $folio) }}')">
+                            onclick="confirmDelete('{{ route('admin.folios.destroy', Crypt::encrypt($folio->id)) }}')">
                         <i class="fas fa-trash me-2"></i>Hapus Folio
                     </button>
                 </div>

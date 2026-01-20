@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use App\Services\Admin\AuthenticationService;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 // Middleware untuk mengecek apakah user sudah login
@@ -17,11 +17,8 @@ class Authentication
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Inject AuthenticationService
-        $authService = app(AuthenticationService::class);
-
-        // Check apakah user sudah login
-        if (!$authService->isAuthenticated()) {
+        // Check apakah user sudah login menggunakan Auth::check()
+        if (!Auth::check()) {
             // Jika belum login, redirect ke login page
             return redirect()->route('admin.login')
                 ->with('error', 'Silakan login terlebih dahulu');

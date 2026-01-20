@@ -1,6 +1,8 @@
 <!-- Halaman Manajemen Sineas -->
 @extends('admin.layout.index')
 
+@section('title', 'Miniseri - Sineas Management')
+
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
     <!-- Header Halaman -->

@@ -74,14 +74,14 @@
                                     <i class="ti ti-dots-vertical"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="{{ route('admin.folios.show', $folio) }}">
+                                    <a class="dropdown-item" href="{{ route('admin.folios.show', Crypt::encrypt($folio->id)) }}">
                                         <i class="ti ti-eye me-1"></i>Lihat Detail
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('admin.folios.edit', $folio) }}">
+                                    <a class="dropdown-item" href="{{ route('admin.folios.edit', Crypt::encrypt($folio->id)) }}">
                                         <i class="ti ti-pencil me-1"></i>Edit
                                     </a>
                                     <div class="dropdown-divider"></div>
-                                    <form method="POST" action="{{ route('admin.folios.toggleFavorite', $folio) }}">
+                                    <form method="POST" action="{{ route('admin.folios.toggleFavorite', Crypt::encrypt($folio->id)) }}">
                                         @csrf
                                         <button type="submit" class="dropdown-item text-warning">
                                             <i class="ti ti-star me-1"></i>Hapus dari Unggulan
@@ -89,7 +89,7 @@
                                     </form>
                                     <div class="dropdown-divider"></div>
                                     <form method="POST"
-                                          action="{{ route('admin.folios.destroy', $folio) }}"
+                                          action="{{ route('admin.folios.destroy', Crypt::encrypt($folio->id)) }}"
                                           onsubmit="return confirm('Yakin hapus folio ini?')">
                                         @csrf
                                         @method('DELETE')
@@ -150,14 +150,14 @@
                                 <i class="ti ti-dots-vertical"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="{{ route('admin.folios.show', $folio) }}">
+                                <a class="dropdown-item" href="{{ route('admin.folios.show', Crypt::encrypt($folio->id)) }}">
                                     <i class="ti ti-eye me-1"></i>Lihat Detail
                                 </a>
-                                <a class="dropdown-item" href="{{ route('admin.folios.edit', $folio) }}">
+                                <a class="dropdown-item" href="{{ route('admin.folios.edit', Crypt::encrypt($folio->id)) }}">
                                     <i class="ti ti-pencil me-1"></i>Edit
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <form method="POST" action="{{ route('admin.folios.toggleFavorite', $folio) }}">
+                                <form method="POST" action="{{ route('admin.folios.toggleFavorite', Crypt::encrypt($folio->id)) }}">
                                     @csrf
                                     <button type="submit" class="dropdown-item text-primary">
                                         <i class="ti ti-star me-1"></i>Jadikan Unggulan
@@ -165,7 +165,7 @@
                                 </form>
                                 <div class="dropdown-divider"></div>
                                 <form method="POST"
-                                      action="{{ route('admin.folios.destroy', $folio) }}"
+                                      action="{{ route('admin.folios.destroy', Crypt::encrypt($folio->id)) }}"
                                       onsubmit="return confirm('Yakin hapus folio ini?')">
                                     @csrf
                                     @method('DELETE')
