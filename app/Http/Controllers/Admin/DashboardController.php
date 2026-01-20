@@ -19,7 +19,7 @@ class DashboardController extends Controller
     public function index(): View
     {
         // Ambil data statistik dari database
-        // $totalUsers = User::query()->count();
+        $totalUsers = User::query()->count();
         $totalFolios = Folio::query()->count();
         $totalSineasRegistrations = SineasRegistration::query()->count();
 
@@ -36,19 +36,19 @@ class DashboardController extends Controller
             ->get();
 
         // Ambil users terbaru (limit 5)
-        // $recentUsers = User::query()
-        //     ->latest('created_at')
-        //     ->limit(5)
-        //     ->get();
+        $recentUsers = User::query()
+            ->latest('created_at')
+            ->limit(5)
+            ->get();
 
         // Kirim data ke view
         return view('admin.dashboard.index', [
-            // 'totalUsers' => $totalUsers,
+            'totalUsers' => $totalUsers,
             'totalFolios' => $totalFolios,
             'totalSineasRegistrations' => $totalSineasRegistrations,
             'recentSineasRegistrations' => $recentSineasRegistrations,
             'recentFolios' => $recentFolios,
-            // 'recentUsers' => $recentUsers,
+            'recentUsers' => $recentUsers,
         ]);
     }
 }

@@ -4,6 +4,8 @@
   <meta charset="UTF-8" content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Miniseri - Detail Folio</title>
 
+  <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/logo-miniseri.png') }}" />
+
   {{-- Bootstrap CSS --}}
   <link href="{{ asset('assets/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('assets/style/css/homepage.css') }}">

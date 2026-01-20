@@ -3,7 +3,9 @@
 use App\Http\Controllers\Admin\AuthenticationController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FolioController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SineasController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 // Route untuk login (tidak perlu middleware auth)
@@ -23,6 +25,18 @@ Route::prefix('admin')->middleware('authentication')->group(function() {
     // Proses logout
     Route::post('/logout', [AuthenticationController::class, 'logout'])->name('admin.logout');
 
+    // Routes untuk Profile Management
+    Route::prefix('profile')->name('admin.profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('index');
+        Route::put('/', [ProfileController::class, 'update'])->name('update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
+    });
+
+    // Routes untuk User Management
+    Route::prefix('users')->name('admin.users.')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('index');
+    });
+
     // Routes untuk Sineas Management
     Route::prefix('sineas')->name('admin.sineas.')->group(function () {
         Route::get('/', [SineasController::class, 'index'])->name('index');
@@ -36,10 +50,10 @@ Route::prefix('admin')->middleware('authentication')->group(function() {
         Route::get('/', [FolioController::class, 'index'])->name('index');
         Route::get('/create', [FolioController::class, 'create'])->name('create');
         Route::post('/', [FolioController::class, 'store'])->name('store');
-        Route::get('/{folio}', [FolioController::class, 'show'])->name('show');
-        Route::get('/{folio}/edit', [FolioController::class, 'edit'])->name('edit');
-        Route::put('/{folio}', [FolioController::class, 'update'])->name('update');
-        Route::post('/{folio}/toggle-favorite', [FolioController::class, 'toggleFavorite'])->name('toggleFavorite');
-        Route::delete('/{folio}', [FolioController::class, 'destroy'])->name('destroy');
+        Route::get('/{hash}', [FolioController::class, 'show'])->name('show');
+        Route::get('/edit/{hash}', [FolioController::class, 'edit'])->name('edit');
+        Route::put('/{hash}', [FolioController::class, 'update'])->name('update');
+        Route::post('/toggle-favorite/{hash}', [FolioController::class, 'toggleFavorite'])->name('toggleFavorite');
+        Route::delete('/{hash}', [FolioController::class, 'destroy'])->name('destroy');
     });
 });

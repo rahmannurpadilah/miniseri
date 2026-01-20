@@ -3,16 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Services\Admin\AuthenticationService;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Auth;
 
 // Controller untuk handle request login dan logout admin
 class AuthenticationController extends Controller
 {
-    // Inject AuthenticationService melalui constructor
-    public function __construct(protected AuthenticationService $authService) {}
 
     /**
      * Tampilkan halaman login
@@ -44,25 +42,19 @@ class AuthenticationController extends Controller
             'password.min' => 'Password minimal 6 karakter',
         ]);
 
-        // Coba login menggunakan AuthenticationService
-        $user = $this->authService->attemptLogin(
-            $validated['email'],
-            $validated['password']
-        );
-
-        // Jika login gagal
-        if (!$user) {
+        // Coba login menggunakan Auth::attempt
+        if (!Auth::attempt($validated)) {
             return back()
                 ->withInput($request->only('email'))
                 ->withErrors(['login' => 'Email atau password salah']);
         }
 
-        // Jika login berhasil, set user session
-        $this->authService->setUserSession($user);
+        // Regenerate session untuk keamanan
+        $request->session()->regenerate();
 
         // Redirect ke dashboard dengan pesan sukses
         return redirect()->route('admin.dashboard.index')
-            ->with('success', 'Login berhasil! Selamat datang ' . $user->name);
+            ->with('success', 'Login berhasil! Selamat datang ' . Auth::user()->name);
     }
 
     /**
@@ -70,10 +62,14 @@ class AuthenticationController extends Controller
      * 
      * @return RedirectResponse - Redirect ke halaman login
      */
-    public function logout(): RedirectResponse
+    public function logout(Request $request): RedirectResponse
     {
-        // Logout user dengan menghapus session
-        $this->authService->logout();
+        // Logout user
+        Auth::logout();
+
+        // Invalidate session dan regenerate token
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         // Redirect ke login dengan pesan
         return redirect()->route('admin.login')

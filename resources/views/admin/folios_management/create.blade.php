@@ -120,12 +120,12 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="desc_full" class="form-label">Deskripsi Lengkap <span class="text-danger">*</span></label>
+                    <label for="desc_full" class="form-label">Deskripsi Lengkap / sinopsis <span class="text-danger">*</span></label>
                     <textarea class="form-control @error('desc_full') is-invalid @enderror" 
                               id="desc_full" 
                               name="desc_full" 
                               rows="5"
-                              placeholder="Deskripsi lengkap folio"
+                              placeholder="Deskripsi lengkap atau sinopsis folio"
                               required>{{ old('desc_full') }}</textarea>
                     @error('desc_full')
                         <div class="invalid-feedback d-block">{{ $message }}</div>

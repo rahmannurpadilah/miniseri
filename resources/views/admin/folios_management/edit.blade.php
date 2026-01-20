@@ -7,21 +7,12 @@
     <h4 class="mb-4">Edit Folio: {{ $folio->title }}</h4>
 
     <!-- Alert Messages -->
-    @if ($errors->any())
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+    @include('admin.partials.alert')
 
     <!-- Form -->
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('admin.folios.update', $folio) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.folios.update', Crypt::encrypt($folio->id)) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -145,12 +136,12 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="desc_full" class="form-label">Deskripsi Lengkap <span class="text-danger">*</span></label>
+                    <label for="desc_full" class="form-label">Deskripsi Lengkap / sinopsis <span class="text-danger">*</span></label>
                     <textarea class="form-control @error('desc_full') is-invalid @enderror" 
                               id="desc_full" 
                               name="desc_full" 
                               rows="5"
-                              placeholder="Deskripsi lengkap folio"
+                              placeholder="Deskripsi lengkap atau sinopsis folio"
                               required>{{ old('desc_full', $folio->desc_full) }}</textarea>
                     @error('desc_full')
                         <div class="invalid-feedback d-block">{{ $message }}</div>

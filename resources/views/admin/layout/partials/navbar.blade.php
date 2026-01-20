@@ -408,21 +408,21 @@ id="layout-navbar">
         claass="nav-link dropdown-toggle hide-arrow p-0"
         href="javascript:void(0);"
         data-bs-toggle="dropdown">
-        <div class="avatar avatar-online">
-            <img src="{{ asset('assets/vuexy/img/avatars/1.png') }}" alt class="rounded-circle" />
-        </div>
+        <span class="avatar avatar-online rounded-circle bg-label-secondary">
+            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+        </span>
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
         <li>
             <a class="dropdown-item mt-0" href="pages-account-settings-account.html">
             <div class="d-flex align-items-center">
                 <div class="flex-shrink-0 me-2">
-                <div class="avatar avatar-online">
-                    <img src="{{ asset('assets/vuexy/img/avatars/1.png') }}" alt class="rounded-circle" />
-                </div>
+                <span class="avatar avatar-initial rounded-circle bg-label-secondary">
+                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                </span>
                 </div>
                 <div class="flex-grow-1">
-                <h6 class="mb-0">John Doe</h6>
+                <h6 class="mb-0">{{ Auth::user()->name }}</h6>
                 <small class="text-muted">Admin</small>
                 </div>
             </div>
@@ -432,7 +432,7 @@ id="layout-navbar">
             <div class="dropdown-divider my-1 mx-n2"></div>
         </li>
         <li>
-            <a class="dropdown-item" href="pages-profile-user.html">
+            <a class="dropdown-item" href="{{ route('admin.profile.index') }}">
             <i class="ti ti-user me-3 ti-md"></i><span class="align-middle">My Profile</span>
             </a>
         </li>
